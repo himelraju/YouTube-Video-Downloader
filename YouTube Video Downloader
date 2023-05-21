@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Video Downloader</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        input {
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .download-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #45a049;
+        }
+
+        .material-icons {
+            margin-right: 6px;
+        }
+
+        .button-spacing {
+            margin-top: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            color: #f00;
+        }
+
+        .video-info {
+            margin-top: 10px;
+        }
+
+        .video-info p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Downloader</h1>
+        <input type="text" id="videoUrl" placeholder="Enter YouTube video URL">
+        <button onclick="getDownloadLink()" class="download-button">
+            <i class="material-icons">link</i>
+            Get Download Link
+        </button>
+        <div id="result" class="result"></div>
+        <a id="downloadBtn" class="download-button button-spacing hidden" href="" download>
+            <i class="material-icons">cloud_download</i>
+            Download Video
+        </a>
+        <div id="videoInfo" class="video-info hidden"></div>
+    </div>
+
+    <script>
+        function getDownloadLink() {
+            var videoUrl = document.getElementById("videoUrl").value;
+            var result = document.getElementById("result");
+            var downloadBtn = document.getElementById("downloadBtn");
+            var videoInfo = document.getElementById("videoInfo");
+
+            // Validate the YouTube URL
+            if (!isValidYouTubeUrl(videoUrl)) {
+                result.innerHTML = "<p class='error-message'>Invalid YouTube URL.</p>";
+                downloadBtn.classList.add("hidden");
+                videoInfo.classList.add("hidden");
+                return;
+            }
+
+            // Extract the video ID from the URL
+            var videoId = extractVideoId(videoUrl);
+
+            // Generate the download link
+            var downloadLink = "https://www.ssyoutube.com/watch?v=" + videoId;
+            result.innerHTML = "";
+            downloadBtn.href = downloadLink;
+            downloadBtn.classList.remove("hidden");
+
+            // Fetch video information
+            fetchVideoInfo(videoId);
+        }
+
+        function isValidYouTubeUrl(url) {
+            // Regular expression to validate YouTube URLs
+            var youtubeRegex = /^(https?:\/\/)?(www\.)?youtube.com\/watch\?v=[\w-]{11}$/;
+            return youtubeRegex.test(url);
+        }
+
+        function extractVideoId(url) {
+            // Regular expression to extract the video ID from YouTube URLs
+            var videoIdRegex = /v=([\w-]{11})/;
+            var match = url.match(videoIdRegex);
+            return match[1];
+        }
+
+        function fetchVideoInfo(videoId) {
+            // Make an API call to fetch video information
+            // You can use your own API or a third-party API to get the video details
+            // Here, we'll simulate the API call by using a setTimeout function
+            setTimeout(function() {
+                var videoInfo = document.getElementById("videoInfo");
+                videoInfo.innerHTML = "<p><strong>Video ID:</strong> " + videoId + "</p>";
+
+                // Show the video information section
+                videoInfo.classList.remove("hidden");
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
